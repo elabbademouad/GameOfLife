@@ -4,16 +4,21 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { PlayPageRoutingModule } from './play-routing.module';
 
 import { PlayPage } from './play.page';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    PlayPageRoutingModule
+    RouterModule.forChild([
+      {
+        path: '',
+        component: PlayPage
+      }
+    ])
   ],
   declarations: [PlayPage]
 })
