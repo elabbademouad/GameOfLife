@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CanvasService } from '../services/canvas.service';
 import { zoomEnum } from '../model/zoom-enum';
+import { GameEngineService } from '../services/game-engine.service';
+import { gameStateEnum } from '../model/game-state-enum';
 
 @Component({
   selector: 'app-play',
@@ -9,22 +11,44 @@ import { zoomEnum } from '../model/zoom-enum';
 })
 export class PlayPage implements OnInit {
 
-  @ViewChild('grid',{static:true})
-  grid:ElementRef;
+  public state: gameStateEnum = gameStateEnum.stoped;
+  public generation: number = 0;
 
-  @ViewChild('scene',{static:true})
-  scene:ElementRef;
+  @ViewChild('grid', { static: true })
+  grid: ElementRef;
 
-  constructor(public _canvasService:CanvasService) { 
+  @ViewChild('scene', { static: true })
+  scene: ElementRef;
+
+  constructor(public _canvasService: CanvasService,
+    public _gameEngineService: GameEngineService) {
+    this._gameEngineService.getCurrentState()
+      .subscribe((state: gameStateEnum) => {
+        this.state = state;
+      });
+    this._gameEngineService.getGenerationNumber()
+      .subscribe(generation => {
+        this.generation = generation;
+      })
   }
-  
 
-  zoom(e:zoomEnum){
-     this._canvasService.zoom(e);
+  zoomClick(e: zoomEnum) {
+    this._canvasService.zoom(e);
   }
+
   ngOnInit() {
-    this._canvasService.setupCanvas(this.grid,this.scene);
+    this._canvasService.setupCanvas(this.grid, this.scene);
   }
 
+  public breakClick() {
+    this._gameEngineService.break();
+  }
 
+  public stopClick() {
+    this._gameEngineService.stop();
+  }
+
+  public runClick() {
+    this._gameEngineService.run();
+  }
 }

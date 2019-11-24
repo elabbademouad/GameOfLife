@@ -1,5 +1,7 @@
 {
   "name": "GameOfLife",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
