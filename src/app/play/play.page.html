@@ -8,7 +8,17 @@
     </ion-title>
   </ion-toolbar>
 </ion-header>
-
+<ion-button (click)="zoom(0)">
+    <ion-icon  name="search" ></ion-icon>+
+  </ion-button>
+  <ion-button (click)="zoom(1)">
+      <ion-icon name="search" ></ion-icon>-
+    </ion-button>
 <ion-content>
-<canvas #canvas class="canvas" width="200" height="200" ></canvas>
+  
+  <div class="container">
+    <canvas #grid class="grid"></canvas>
+  <canvas #scene class="scene"></canvas>
+  </div>
+
 </ion-content>
