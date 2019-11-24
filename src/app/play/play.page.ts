@@ -1,4 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { CanvasService } from '../services/canvas.service';
+import { zoomEnum } from '../model/zoom-enum';
 
 @Component({
   selector: 'app-play',
@@ -7,21 +9,21 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 })
 export class PlayPage implements OnInit {
 
-  @ViewChild('canvas',{static:true})
-  canvas:ElementRef;
-  
-  private ctx:CanvasRenderingContext2D
+  @ViewChild('grid',{static:true})
+  grid:ElementRef;
 
-  constructor() { 
+  @ViewChild('scene',{static:true})
+  scene:ElementRef;
 
+  constructor(public _canvasService:CanvasService) { 
   }
+  
 
+  zoom(e:zoomEnum){
+     this._canvasService.zoom(e);
+  }
   ngOnInit() {
-    this.ctx=this.canvas.nativeElement.getContext('2d');
-    this.ctx.fillStyle = 'rgb(200, 0, 0)';
-    this.ctx.fillRect(10, 10, 50, 50);
-    this.ctx.fillStyle = 'rgba(0, 0, 200, 0.5)';
-    this.ctx.fillRect(30, 30, 50, 50);
+    this._canvasService.setupCanvas(this.grid,this.scene);
   }
 
 
