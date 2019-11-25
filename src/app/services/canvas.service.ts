@@ -48,10 +48,10 @@ export class CanvasService {
   private drawGrid() {
     for (let x = 0; x < this.gridWidth; x += this._drawingUnit) {
       for (let y = 0; y < this.gridWidth; y += this._drawingUnit) {
-        this.gridContext.fillStyle = "#e3f2fd"
+        this.gridContext.fillStyle = "white"
         this.gridContext.fillRect(x, y, this._drawingUnit, this._drawingUnit);
-        this.gridContext.lineWidth = 0.3*window.devicePixelRatio;
-        this.gridContext.strokeStyle = "#b1bfca"
+        this.gridContext.lineWidth = 0.09*window.devicePixelRatio;
+        this.gridContext.strokeStyle = "black"
         this.gridContext.strokeRect(x, y, this._drawingUnit, this._drawingUnit);
       }
     }
@@ -63,7 +63,7 @@ export class CanvasService {
       }
     }
     generations.forEach(p=>{
-      this.sceneContext.fillStyle="#388e3c"
+      this.sceneContext.fillStyle="#3880ff"
       this.sceneContext.fillRect(p.x*this._drawingUnit,p.y*this._drawingUnit,this._drawingUnit,this._drawingUnit);
     })
   }
