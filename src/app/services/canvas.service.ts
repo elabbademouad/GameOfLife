@@ -32,8 +32,8 @@ export class CanvasService {
   }
   setupCanvas(grid: ElementRef, scene: ElementRef) {
     this.grid = grid;
-    let dpi=window.devicePixelRatio;
-    this.gridHeight = this.grid.nativeElement.height=this.grid.nativeElement.height*dpi;
+    let dpi = window.devicePixelRatio;
+    this.gridHeight = this.grid.nativeElement.height = this.grid.nativeElement.height * dpi;
     this.gridWidth = this.grid.nativeElement.width = this.gridHeight;
     this.gridContext = this.grid.nativeElement.getContext("2d");
 
@@ -50,11 +50,19 @@ export class CanvasService {
       for (let y = 0; y < this.gridWidth; y += this._drawingUnit) {
         this.gridContext.fillStyle = "white"
         this.gridContext.fillRect(x, y, this._drawingUnit, this._drawingUnit);
-        this.gridContext.lineWidth = 0.09*window.devicePixelRatio;
+        this.gridContext.lineWidth = 0.09 * window.devicePixelRatio;
         this.gridContext.strokeStyle = "black"
         this.gridContext.strokeRect(x, y, this._drawingUnit, this._drawingUnit);
       }
     }
+  }
+  public getPoint(e: any): point {
+    let x = (e.layerX / this._drawingUnit).toString().split('.')[0];
+    let y = (e.layerY / this._drawingUnit).toString().split('.')[0];
+    let p = new point();
+    p.x = Number(x);
+    p.y = Number(y);
+    return p;
   }
   public drawGeneration(generations: Array<point>) {
     for (let x = 0; x < this.gridWidth; x += this._drawingUnit) {
@@ -62,9 +70,11 @@ export class CanvasService {
         this.sceneContext.clearRect(x, y, this._drawingUnit, this._drawingUnit);
       }
     }
-    generations.forEach(p=>{
-      this.sceneContext.fillStyle="#3880ff"
-      this.sceneContext.fillRect(p.x*this._drawingUnit,p.y*this._drawingUnit,this._drawingUnit,this._drawingUnit);
+    generations.forEach(p => {
+      this.sceneContext.fillStyle = "green"
+      this.sceneContext.fillRect(p.x * this._drawingUnit, p.y * this._drawingUnit, this._drawingUnit, this._drawingUnit);
+      this.sceneContext.strokeStyle = "black"
+      this.sceneContext.strokeRect(p.x * this._drawingUnit, p.y * this._drawingUnit, this._drawingUnit, this._drawingUnit);
     })
   }
 

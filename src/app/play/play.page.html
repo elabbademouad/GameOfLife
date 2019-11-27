@@ -11,7 +11,7 @@
 <ion-content>
   <div class="container">
     <canvas #grid class="grid"></canvas>
-    <canvas #scene class="scene"></canvas>
+    <canvas #scene (click)="sceneClick($event)" class="scene"></canvas>
   </div>
 </ion-content>
 <ion-footer class="ion-no-padding">

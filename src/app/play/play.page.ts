@@ -21,7 +21,7 @@ export class PlayPage implements OnInit {
   scene: ElementRef;
 
   constructor(public _canvasService: CanvasService,
-    public _gameEngineService: GameEngineService) {
+              public _gameEngineService: GameEngineService) {
     this._gameEngineService.getCurrentState()
       .subscribe((state: gameStateEnum) => {
         this.state = state;
@@ -29,7 +29,8 @@ export class PlayPage implements OnInit {
     this._gameEngineService.getGenerationNumber()
       .subscribe(generation => {
         this.generation = generation;
-      })
+      });
+    
   }
 
   zoomClick(e: zoomEnum) {
@@ -38,6 +39,9 @@ export class PlayPage implements OnInit {
 
   ngOnInit() {
     this._canvasService.setupCanvas(this.grid, this.scene);
+    this._gameEngineService.addPoint({ x: 8, y: 7 });
+    this._gameEngineService.addPoint({ x: 8, y: 8 });
+    this._gameEngineService.addPoint({ x: 8, y: 9 });
   }
 
   public breakClick() {
@@ -50,5 +54,11 @@ export class PlayPage implements OnInit {
 
   public runClick() {
     this._gameEngineService.run();
+  }
+
+  public sceneClick(e:any){
+    let point= this._canvasService.getPoint(e);
+    this._gameEngineService.addPoint(point);
+    //this._canvasService.drawGeneration()
   }
 }
