@@ -2,26 +2,45 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { CanvasService } from './canvas.service';
 import { point } from '../model/point-model';
 import { gameStateEnum } from '../model/game-state-enum';
+import { Constants } from '../constants/constants';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class GameEngineService {
-
-  private _state: gameStateEnum = gameStateEnum.stoped;
-  private _stateEvent: EventEmitter<gameStateEnum> = new EventEmitter<gameStateEnum>();
-  private _generation: Array<point> = [];
-  private _generationNumberEvent: EventEmitter<number> = new EventEmitter<number>();
-  private _generationNumber: number = 0;
+  //#region private member
+  private _state: gameStateEnum;
+  private _stateEvent: EventEmitter<gameStateEnum>;
+  private _generation: Array<point>;
+  private _generationNumberEvent: EventEmitter<number>;
+  private _generationNumber: number;
   private _intervalId: any;
-  private _minPoint: point = new point();
-  private _maxPoint: point = new point();
-  public speed: number = 80;
+  private _minPoint: point;
+  private _maxPoint: point;
+  private _speed: number;
 
+
+  //#endregion
+
+  //#region properties
+  //#endregion
+
+  //#region constructor
   constructor(public _canvasService: CanvasService) {
-  }
+    this._state = gameStateEnum.stoped;
+    this._stateEvent = new EventEmitter<gameStateEnum>();
+    this._generation = [];
+    this._generationNumberEvent = new EventEmitter<number>();
+    this._generationNumber = 0;
+    this._minPoint = new point();
+    this._maxPoint = new point();
+    this._speed = Constants.DEFAULT_SPEED;
 
+  }
+  //#endregion
+
+  //#region public functions
   public break() {
     this._state = gameStateEnum.breaked;
     this._stateEvent.emit(this._state);
@@ -35,7 +54,7 @@ export class GameEngineService {
       if (this._state === gameStateEnum.running) {
         this.nextGeneration();
       }
-    }, this.speed);
+    }, this._speed);
   }
 
   public stop() {
@@ -57,6 +76,46 @@ export class GameEngineService {
     return this._generationNumberEvent.asObservable();
   }
 
+  public addPoint(point: point) {
+    let index = this.getPointIndex(point);
+    if (index === -1) {
+      this.setMinAndMaxPoint(point, this._generation)
+      this._generation.push(point);
+    } else {
+      this._generation.splice(index, 1);
+    }
+    this._canvasService.drawGeneration(this._generation);
+  }
+
+  public changeSpeed(value: number) {
+    this._speed = value;
+    clearInterval(this._intervalId);
+    this._intervalId = setInterval(() => {
+      if (this._state === gameStateEnum.running) {
+        this.nextGeneration();
+      }
+    }, this._speed);
+  }
+
+  public moveScene(startPoint:point,endPoint:point){
+    let x=endPoint.x-startPoint.x;
+    let y=endPoint.y-startPoint.y;
+    if(x !== 0 && y !==0){
+      this._maxPoint.x+=x;
+      this._maxPoint.y+=y;
+      this._minPoint.x+=x;
+      this._minPoint.y+=y;
+      this._generation.forEach(p=>{
+        p.x+=x;
+        p.y+=y;
+      })
+      this._canvasService.drawGeneration(this._generation);
+    }
+  }
+
+  //#endregion
+
+  //#region private functions
   private nextGeneration() {
     this._generationNumber++;
     this._generation = this.applyRules();
@@ -75,7 +134,7 @@ export class GameEngineService {
         tmpPoint.x = x;
         tmpPoint.y = y;
         let neighbors = this.getNeighbors(tmpPoint);
-        let isLive=this.isLive(tmpPoint);
+        let isLive = this.isLive(tmpPoint);
         if (!this.underpopulationRule(neighbors) && !this.overpopulationRule(neighbors) && isLive) {
           this.setMinAndMaxPoint(tmpPoint, newGeneration);
           newGeneration.push(tmpPoint);
@@ -132,10 +191,9 @@ export class GameEngineService {
   private isLive(point: point): boolean {
     return this._generation.findIndex((p) => { return p.x == point.x && p.y == point.y }) !== -1;
   }
-  public addPoint(point: point) {
-    this.setMinAndMaxPoint(point, this._generation)
-    this._generation.push(point);
-    this._canvasService.drawGeneration(this._generation);
+
+  private getPointIndex(point: point): number {
+    return this._generation.findIndex((p) => { return p.x == point.x && p.y == point.y });
   }
   private setMinAndMaxPoint(point: point, generation: Array<point>) {
     if (generation.length == 0) {
@@ -158,12 +216,7 @@ export class GameEngineService {
       }
     }
   }
-
-  /*
-    x-1,y-1  x,y-1 x+1,y-1
-    x-1,y    x,y   x+1,y
-    x-1,y+1  x,y+1 x+1,y+1
-  */
+  //#endregion
 
 
 }
