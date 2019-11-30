@@ -11,7 +11,7 @@
 <ion-content>
   <div class="container">
     <canvas #grid class="grid"></canvas>
-    <canvas #scene (click)="sceneClick($event)" class="scene"></canvas>
+    <canvas #scene  (touchstart)="touchstart($event)" (touchend)="touchend($event)"  (click)="sceneClick($event)" class="scene"></canvas>
   </div>
 </ion-content>
 <ion-footer class="ion-no-padding">
@@ -27,7 +27,7 @@
         <ion-icon name="square"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-range min="1000" max="4000" class="ion-no-padding" color="danger">
+    <ion-range (ionChange)="changeSpeed($event)" value="1600" min="1000" max="2000" class="ion-no-padding" color="danger">
       <ion-icon size="small" slot="start" name="speedometer"></ion-icon>
     </ion-range>
     <ion-buttons slot="end">
