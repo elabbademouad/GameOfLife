@@ -1,13 +1,11 @@
 .grid{
-    height:  600px;
     position: absolute;
 }
 .scene{
-    height: 600px;
     position: absolute;
 }
 .container{
     height: 100%;
-    overflow-x: auto;
+    overflow: hidden ;
     position: relative;
 }
