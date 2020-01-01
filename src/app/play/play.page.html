@@ -1,37 +1,39 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>
-      Game of life {{ generation!=0 ? ' '+ generation : '' }}
+    <ion-title class="tahoma">
+      Generation : {{ ' '+ generation  }}
     </ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content>
   <div class="container">
     <canvas #grid class="grid"></canvas>
-    <canvas #scene  (touchstart)="touchstart($event)" (touchend)="touchend($event)"  (click)="sceneClick($event)" class="scene"></canvas>
+    <canvas #scene (touchstart)="touchstart($event)" (touchend)="touchend($event)" (click)="sceneClick($event)"
+      class="scene"></canvas>
   </div>
 </ion-content>
 <ion-footer class="ion-no-padding">
-  <ion-toolbar>
-    <ion-buttons slot="start" class="ion-no-padding">
-      <ion-button (click)="runClick()" [disabled]="state===2" class="ion-no-padding">
+  <ion-toolbar  >
+    <ion-buttons  slot="start" class="ion-no-padding">
+      <ion-button  (click)="runClick()" [disabled]="state===2" class="ion-no-padding">
         <ion-icon name="play"></ion-icon>
       </ion-button>
-      <ion-button (click)="breakClick()" [disabled]="state!==2" class="ion-no-padding">
+      <ion-button  (click)="breakClick()" [disabled]="state!==2" class="ion-no-padding">
         <ion-icon name="pause"></ion-icon>
       </ion-button>
-      <ion-button (click)="stopClick()" [disabled]="state===0" class="ion-no-padding">
+      <ion-button  (click)="stopClick()" [disabled]="state===0" class="ion-no-padding">
         <ion-icon name="square"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-range (ionChange)="changeSpeed($event)" value="1600" min="1000" max="2000" class="ion-no-padding" color="danger">
+    <ion-range (ionChange)="changeSpeed($event)" value="1600" min="1000" max="2000" class="ion-no-padding"
+      >
       <ion-icon size="small" slot="start" name="speedometer"></ion-icon>
     </ion-range>
     <ion-buttons slot="end">
-      <ion-button class="ion-no-padding" (click)="zoomClick(0)">
+      <ion-button  class="ion-no-padding" (click)="zoomClick(0)">
         <ion-icon name="search"></ion-icon>+
       </ion-button>
       <ion-button class="ion-no-padding" (click)="zoomClick(1)">

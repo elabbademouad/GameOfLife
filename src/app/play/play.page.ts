@@ -13,8 +13,8 @@ import { point } from '../model/point-model';
 })
 export class PlayPage implements OnInit {
 
-  private _touchStartPoint:point=null;
-  private _touchEndPoint:point=null;
+  private _touchStartPoint: point = null;
+  private _touchEndPoint: point = null;
   public state: gameStateEnum = gameStateEnum.stoped;
   public generation: number = 0;
 
@@ -41,21 +41,22 @@ export class PlayPage implements OnInit {
     this._canvasService.zoom(e);
   }
 
-  touchstart(event:any){
-    let x=event.touches[0].clientX;
-    let y=event.touches[0].clientY;
-    this._touchStartPoint=this._touchStartPoint=this._canvasService.getPointFromPixel(x,y);
+  touchstart(event: any) {
+    let x = event.touches[0].clientX;
+    let y = event.touches[0].clientY;
+    this._touchStartPoint = this._touchStartPoint = this._canvasService.getPointFromPixel(x, y);
   }
-  touchend(event:any){
-    let x=event.changedTouches[0].clientX;
-    let y=event.changedTouches[0].clientY;
-    
-    this._touchEndPoint=this._canvasService.getPointFromPixel(x,y);
-    this._gameEngineService.moveScene(this._touchStartPoint,this._touchEndPoint);
+  touchend(event: any) {
+    let x = event.changedTouches[0].clientX;
+    let y = event.changedTouches[0].clientY;
+
+    this._touchEndPoint = this._canvasService.getPointFromPixel(x, y);
+    this._gameEngineService.moveScene(this._touchStartPoint, this._touchEndPoint);
   }
 
   ngOnInit() {
     this._canvasService.setupCanvas(this.grid, this.scene);
+    this._gameEngineService.stop();
   }
 
   public breakClick() {
@@ -71,7 +72,7 @@ export class PlayPage implements OnInit {
   }
 
   public sceneClick(e: any) {
-    let point = this._canvasService.getPointFromPixel(e.layerX,e.layerY);
+    let point = this._canvasService.getPointFromPixel(e.layerX, e.layerY);
     this._gameEngineService.addPoint(point);
   }
 

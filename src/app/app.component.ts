@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { Platform } from '@ionic/angular';
+import { Platform, MenuController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
@@ -12,21 +12,22 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 export class AppComponent {
   public appPages = [
     {
-      title: 'Home',
+      title: 'Conway’s game of life',
       url: '/home',
-      icon: 'home'
+      icon: 'bulb'
     },
     {
-      title: 'Play',
+      title: 'Simulation',
       url: '/play',
-      icon: 'play'
+      icon: 'logo-game-controller-b'
     }
   ];
 
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    private menuController:MenuController
   ) {
     this.initializeApp();
   }
@@ -34,7 +35,9 @@ export class AppComponent {
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
-      this.splashScreen.hide();
+      this.statusBar.overlaysWebView(false);
+      this.statusBar.backgroundColorByHexString('#005005');
+      this.menuController.swipeEnable(false);
     });
   }
 }
